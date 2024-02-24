@@ -1,0 +1,62 @@
+# Ignore compiled Python files
+.pyc
+__pycache__
+
+# Ignore virtual environment files
+venv/
+.env/
+
+# Ignore log files
+.log
+
+# Ignore database files
+.db
+
+# Ignore package files
+.egg-info/
+
+# Ignore cache files
+.cache/
+
+# Ignore IDE files
+.vscode/
+.idea/
+
+# Ignore test files
+tests/
+
+# Ignore configuration files
+.cfg
+
+# Ignore environment variables
+.env
+
+# Ignore coverage files
+.coverage
+
+# Ignore temporary files
+.tmp
+
+# Ignore backup files
+.bak
+
+# Ignore generated files
+.generated
+
+# Ignore compiled files
+.compiled
+
+# Ignore dependencies
+node_modules/
+
+# Ignore data files
+data/
+
+# Ignore documentation files
+docs/
+
+# Ignore output files
+output/
+
+# Ignore any other temporary or generated files
+~
