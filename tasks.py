@@ -1,11 +1,9 @@
 import subprocess
-import asyncio
 from datetime import timedelta
-
 from celery import Celery
 from celery.schedules import crontab
-from base import bot, canvas, redis_host
-
+from base import canvas, redis_host
+from services import clear_schedule_queue, send_notification
 app = Celery('tasks', broker=redis_host,
              backend=redis_host)
 
@@ -20,16 +18,6 @@ app.conf.beat_schedule = {
 }
 
 
-async def send_awaited_message(chat_id, data):
-    await bot.send_message(chat_id, f"<strong>Course name: </strong>{data['course_name']}\n"
-                                    f"<strong>Assignment title: </strong>{data['assignment_name']}\n"
-                                    f"<strong>Assignment deadline: </strong>{data['assignment_due_at']}")
-
-
-def clear_schedule_queue():
-    subprocess.run("celery -A tasks purge -f", shell=True)
-
-
 @app.task
 def refresh_schedules():
     clear_schedule_queue()
@@ -41,5 +29,14 @@ def refresh_schedules():
 
 
 @app.task
-def notify_assignment_deadline(chat_id, data):
-    asyncio.run(send_awaited_message(chat_id, data))
+def notify_assignment_deadline(chat_id: int, data):
+    send_notification(chat_id, data)
+    print(data["assignment_name"], data["assignment_due_at"])
+
+@app.task
+def schedule_all_deadlines_for_single_user(chat_id: int, days:int=1):
+    assignments = canvas.get_all_assignments()
+    for assignment in assignments:
+        eta = assignment["assignment_due_at"] - timedelta(days=days)
+        eta.replace(hour=14, minute=0, second=0, microsecond=0)
+        notify_assignment_deadline.apply_async((chat_id, assignment,), eta=eta)
