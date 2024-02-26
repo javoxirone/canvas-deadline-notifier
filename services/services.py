@@ -37,7 +37,7 @@ def register_user(user) -> None:
     last_name = user.last_name
     username = user.username
     if not user_exists(telegram_id):
-        new_user = User(telegram_id=telegram_id, first_name=first_name, last_name=last_name, username=username, notify_days_before=1)
+        new_user = User(telegram_id=telegram_id, first_name=first_name, last_name=last_name, username=username, notify_before_days=1)
         session.add(new_user)
         session.commit()
 
