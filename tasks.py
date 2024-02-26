@@ -30,7 +30,7 @@ def refresh_schedules():
 
 
 @app.task
-def notify_assignment_deadline(chat_id: int, data):
+def notify_assignment_deadline(chat_id: int, data: dict) -> bool:
     send_notification(chat_id, data)
     print(data["assignment_name"], data["assignment_due_at"])
 

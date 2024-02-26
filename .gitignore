@@ -1,3 +1,8 @@
+# Ignore celery beat files
+.bak
+.dat
+.dir
+
 # Ignore compiled Python files
 .pyc
 __pycache__
