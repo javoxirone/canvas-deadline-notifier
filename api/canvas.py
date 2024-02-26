@@ -35,7 +35,7 @@ class CanvasAPI:
     
 
     def get_all_courses(self) -> List[Dict]:
-        courses = self.request_endpoint("courses")
+        courses = self.request_endpoint("courses", {'enrollment_state': 'active'})
         return courses
 
     def get_all_assignments_of_single_course(self, course_id: int) -> List[Dict]:
@@ -46,7 +46,7 @@ class CanvasAPI:
         :return: List of dictionaries with all assignment information.
         """
 
-        assignments = self.request_endpoint("courses/" + str(course_id) + "/assignments/", {'bucket': 'unsubmitted', 'enrollment_state': 'active'})
+        assignments = self.request_endpoint("courses/" + str(course_id) + "/assignments/", {'bucket': 'unsubmitted'})
 
         return assignments
 

@@ -2,10 +2,11 @@ import subprocess
 from datetime import timedelta
 from celery import Celery
 from celery.schedules import crontab
-from base import canvas, redis_host
-from services import clear_schedule_queue, send_notification
-app = Celery('tasks', broker=redis_host,
-             backend=redis_host)
+from config.integrations import canvas
+from config.constants import REDIS_HOST
+from services.services import clear_schedule_queue, send_notification
+app = Celery('tasks', broker=REDIS_HOST,
+             backend=REDIS_HOST)
 
 app.conf.timezone = 'UTC'
 
